@@ -19,12 +19,12 @@
     <%= form.submit "Submit" %>
   <% end %>
 
-    <% if params[:search] && !@found_pets.empty? %>
-      <h3>Results</h3>
-      <% @found_pets.each do |found_pet| %>
-        <%= link_to found_pet.name, "/pets/#{found_pet.id}" %>
-      <% end %>
-    <% elsif params[:search] %>
-      <p>No pets match this search.</p>
+  <% if params[:search] && !@found_pets.empty? %>
+    <h3>Results</h3>
+    <% @found_pets.each do |found_pet| %>
+      <%= link_to found_pet.name, "/pets/#{found_pet.id}" %>
     <% end %>
+  <% elsif params[:search] %>
+    <p>No pets match this search.</p>
+  <% end %>
 <% end %>
