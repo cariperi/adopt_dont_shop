@@ -52,7 +52,6 @@ RSpec.describe 'the application show', type: :features do
 
     fill_in :search, with: "#{pet_1.name}"
     click_button "Submit"
-    save_and_open_page
 
     expect(current_path).to eq("/applications/#{application_2.id}")
     expect(page).to have_content("Results")
