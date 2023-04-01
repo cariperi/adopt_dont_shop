@@ -14,7 +14,6 @@ RSpec.describe 'the application show', type: :features do
     pet_2.applications << application_2
 
     visit "/applications/#{application_1.id}"
-    save_and_open_page
 
     expect(page).to have_content(application_1.name)
     expect(page).to have_content(application_1.street_address)
