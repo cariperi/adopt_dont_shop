@@ -183,6 +183,3 @@ RSpec.describe 'the application show', type: :features do
     expect(page).to_not have_content(pet_1.name)
   end
 end
-
-
-# For example, if I search for "fluff", my search would match pets with names "Fluffy", "FLUFF", and "Mr. FlUfF"
