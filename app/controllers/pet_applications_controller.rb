@@ -1,7 +1,8 @@
 class PetApplicationsController < ApplicationController
   def create
-    PetApplication.create(pet_application_params)
-    redirect_back fallback_location: "/applications"
+    pet_application = PetApplication.create(pet_application_params)
+    application = pet_application.application
+    redirect_to "/applications/#{application.id}"
   end
 
   private
