@@ -26,4 +26,24 @@ RSpec.describe 'the Application creation' do
     expect(page).to have_content("43210")
     expect(page).to have_content("In Progress")
   end
+
+  it 'redirects to new page if form is blank' do
+    visit '/applications/new'
+
+    fill_in('Name', with: "")
+    fill_in('Street Address', with: "")
+    fill_in('City', with: "")
+    fill_in('State', with: "")
+    fill_in('Zipcode', with: "")
+    click_button('Create Application')
+# save_and_open_page
+
+    expect(current_path).to eq("/applications/new")
+    expect(page).to_not have_content("Chris Simmons")
+    expect(page).to_not have_content("123 Main St.")
+    expect(page).to_not have_content("Columbus")
+    expect(page).to_not have_content("OH")
+    expect(page).to_not have_content("43210")
+
+  end
 end
