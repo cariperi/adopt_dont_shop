@@ -10,12 +10,12 @@ class ApplicationsController < ApplicationController
 
   def new
   end
-  
+
   def create
     application = Application.new(application_params)
     if application.save
       redirect_to "/applications/#{application.id}"
-    else 
+    else
       redirect_to '/applications/new'
       flash[:alert] = "ERROR: Please don't leave spaces blank"
     end
@@ -25,7 +25,6 @@ class ApplicationsController < ApplicationController
     @application = Application.find(params[:id])
     @application.update(application_params)
     redirect_to "/applications/#{@application.id}"
-    # require 'pry'; binding.pry  
   end
 
 private

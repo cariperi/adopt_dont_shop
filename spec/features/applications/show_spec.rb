@@ -12,6 +12,9 @@ RSpec.describe 'the application show', type: :features do
   let!(:pet_2) { shelter_1.pets.create!(name: 'Spot', age: 3, breed: 'Singapura', adoptable: true )}
   let!(:pet_3) { shelter_1.pets.create!(name: 'Willow', age: 4, breed: 'Cornish Rex', adoptable: false )}
   let!(:pet_4) { shelter_1.pets.create!(name: 'Spotty', age: 5, breed: 'Calico', adoptable: true )}
+  let!(:pet_5) { shelter_1.pets.create!(name: 'Mr. Spot', age: 2, breed: 'Ocicat', adoptable: true )}
+  let!(:pet_6) { shelter_1.pets.create!(name: 'spots', age: 10, breed: 'Egyptian Mau', adoptable: true )}
+
 
   it "shows the application and all it's attributes" do
     application_1.pets << pet_1
@@ -143,5 +146,40 @@ RSpec.describe 'the application show', type: :features do
 
     expect(page).to_not have_content("Submit My Application")
     expect(page).to_not have_field(:description)
+  end
+
+  it 'can search for pets by PARTIAL name match' do
+    visit "/applications/#{application_2.id}"
+
+    fill_in :search, with: "Spot"
+    click_button "Submit"
+
+    expect(page).to have_content(pet_2.name)
+    expect(page).to have_content(pet_4.name)
+    expect(page).to have_content(pet_5.name)
+  end
+
+  it 'can search for pets by CASE INSENSITIVE name match' do
+    visit "/applications/#{application_2.id}"
+
+    fill_in :search, with: "SPOT"
+    click_button "Submit"
+
+    expect(page).to have_content(pet_2.name)
+    expect(page).to have_content(pet_4.name)
+    expect(page).to have_content(pet_5.name)
+    expect(page).to have_content(pet_6.name)
+
+    expect(page).to_not have_content(pet_1.name)
+
+    fill_in :search, with: "sPoT"
+    click_button "Submit"
+
+    expect(page).to have_content(pet_2.name)
+    expect(page).to have_content(pet_4.name)
+    expect(page).to have_content(pet_5.name)
+    expect(page).to have_content(pet_6.name)
+
+    expect(page).to_not have_content(pet_1.name)
   end
 end
