@@ -44,6 +44,14 @@ RSpec.describe 'the pets index' do
 
     expect(page).to have_current_path("/pets/#{pet_1.id}/edit")
   end
+  
+  it 'displays a link to add a new pet application' do
+    visit '/pets'
+
+    click_link("Start an Application")
+    
+    expect(page).to have_current_path("/applications/new")
+  end
 
   it 'displays a link to delete each pet' do
     shelter = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)

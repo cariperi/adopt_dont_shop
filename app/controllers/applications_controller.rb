@@ -7,4 +7,18 @@ class ApplicationsController < ApplicationController
       @found_pets = Pet.search(params[:search]).adoptable
     end
   end
+
+  def new
+  end
+  
+  def create
+    application = Application.create(application_params)
+    # application.save
+    redirect_to "/applications/#{application.id}"
+  end
+
+private
+  def application_params
+    params.permit(:name, :street_address, :city, :state, :zipcode, :description)
+  end
 end
