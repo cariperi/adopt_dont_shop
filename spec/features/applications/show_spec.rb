@@ -12,6 +12,7 @@ RSpec.describe 'the application show', type: :features do
   let!(:pet_1) { shelter_1.pets.create!(name: 'Jasper', age: 7, breed: 'Maine Coon', adoptable: true )}
   let!(:pet_2) { shelter_1.pets.create!(name: 'Spot', age: 3, breed: 'Singapura', adoptable: true )}
   let!(:pet_3) { shelter_1.pets.create!(name: 'Willow', age: 4, breed: 'Cornish Rex', adoptable: false )}
+  let!(:pet_4) { shelter_1.pets.create!(name: 'Spotty', age: 5, breed: 'Calico', adoptable: true )}
 
   it "shows the application and all it's attributes" do
     application_1.pets << pet_1
@@ -55,11 +56,11 @@ RSpec.describe 'the application show', type: :features do
 
     expect(current_path).to eq("/applications/#{application_2.id}")
     expect(page).to have_content("Results")
-    expect(page).to have_content("#{pet_1.name}")
-    expect("Search for Pets by Name:").to appear_before("#{pet_1.name}")
+    expect(page).to have_content(pet_1.name)
+    expect("Search for Pets by Name:").to appear_before(pet_1.name)
 
-    expect(page).to_not have_content("#{pet_2.name}")
-    expect(page).to_not have_content("#{pet_3.name}")
+    expect(page).to_not have_content(pet_2.name)
+    expect(page).to_not have_content(pet_3.name)
   end
 
   it "shows a message if no pets match the search" do
@@ -85,5 +86,32 @@ RSpec.describe 'the application show', type: :features do
     visit "/applications/#{application_4.id}" #rejected application (already submitted)
     expect(page).to_not have_content("Add a Pet to this Application")
     expect(page).to_not have_field(:search)
+  end
+
+  it "allows users with in-progress apps to add searched pets to their app" do
+    visit "/applications/#{application_2.id}"
+    expect(page).to_not have_content(pet_4.name)
+    expect(page).to have_content("No pets have been added yet!")
+
+    fill_in :search, with: "Spot"
+    click_button "Submit"
+
+    within("#pet-#{pet_2.id}") do
+      expect(page).to have_content(pet_2.name)
+      expect(page).to have_button("Adopt this Pet")
+      expect(pet_2.name).to appear_before("Adopt this Pet")
+    end
+
+    within("#pet-#{pet_4.id}") do
+      expect(page).to have_content(pet_4.name)
+      expect(page).to have_button("Adopt this Pet")
+      expect(pet_4.name).to appear_before("Adopt this Pet")
+    end
+
+    find("#pet-#{pet_4.id}").click_button("Adopt this Pet")
+
+    expect(current_path).to eq("/applications/#{application_2.id}")
+    expect(page).to have_content(pet_4.name)
+    expect(page).to_not have_content("No pets have been added yet!")
   end
 end
