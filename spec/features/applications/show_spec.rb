@@ -94,13 +94,13 @@ RSpec.describe 'the application show', type: :features do
 
     fill_in :search, with: "Spot"
     click_button "Submit"
-    
+
     within("#pet-#{pet_2.id}") do
       expect(page).to have_content(pet_2.name)
       expect(page).to have_button("Adopt this Pet")
       expect(pet_2.name).to appear_before("Adopt this Pet")
     end
-  
+
     within("#pet-#{pet_4.id}") do
       expect(page).to have_content(pet_4.name)
       expect(page).to have_button("Adopt this Pet")
@@ -115,14 +115,14 @@ RSpec.describe 'the application show', type: :features do
   end
 
   it 'can submit an application' do
-    # application_2.pets << pet_4
+    #application_2.pets << pet_4
     visit "/applications/#{application_2.id}"
     expect(page).to have_content("In Progress")
-    
+
     fill_in :search, with: "Spotty"
     click_button "Submit"
     find("#pet-#{pet_4.id}").click_button("Adopt this Pet")
-      save_and_open_page
+
     within("#submitapp") do
       expect(page).to have_content("Submit My Application")
       expect(page).to have_field(:description)
@@ -136,6 +136,12 @@ RSpec.describe 'the application show', type: :features do
     expect(page).to have_content("I'm a good host!")
     expect(page).to_not have_content("Add a Pet to this Application")
     expect(page).to_not have_field(:search)
+  end
 
+  it 'does not show an option to submit if application has no pets' do    visit "/applications/#{application_2.id}"
+    expect(page).to have_content("No pets have been added yet!")
+
+    expect(page).to_not have_content("Submit My Application")
+    expect(page).to_not have_field(:description)
   end
 end
