@@ -6,7 +6,6 @@ RSpec.describe 'the application show', type: :features do
   let!(:application_3) { Application.create!(name: 'Jane Doe', street_address: '1 South Street', city: 'Manhattan', state: 'NY', zipcode: '11231', description: "I love cats.", status: 'Approved' )}
   let!(:application_4) { Application.create!(name: 'Mister Rogers', street_address: '9 North Street', city: 'Philadelphia', state: 'PA', zipcode: '19148', description: "I am so friendly.", status: 'Rejected' )}
 
-
   let!(:shelter_1) { Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)}
 
   let!(:pet_1) { shelter_1.pets.create!(name: 'Jasper', age: 7, breed: 'Maine Coon', adoptable: true )}
@@ -95,13 +94,13 @@ RSpec.describe 'the application show', type: :features do
 
     fill_in :search, with: "Spot"
     click_button "Submit"
-
+    
     within("#pet-#{pet_2.id}") do
       expect(page).to have_content(pet_2.name)
       expect(page).to have_button("Adopt this Pet")
       expect(pet_2.name).to appear_before("Adopt this Pet")
     end
-
+  
     within("#pet-#{pet_4.id}") do
       expect(page).to have_content(pet_4.name)
       expect(page).to have_button("Adopt this Pet")
@@ -113,5 +112,30 @@ RSpec.describe 'the application show', type: :features do
     expect(current_path).to eq("/applications/#{application_2.id}")
     expect(page).to have_content(pet_4.name)
     expect(page).to_not have_content("No pets have been added yet!")
+  end
+
+  it 'can submit an application' do
+    # application_2.pets << pet_4
+    visit "/applications/#{application_2.id}"
+    expect(page).to have_content("In Progress")
+    
+    fill_in :search, with: "Spotty"
+    click_button "Submit"
+    find("#pet-#{pet_4.id}").click_button("Adopt this Pet")
+      save_and_open_page
+    within("#submitapp") do
+      expect(page).to have_content("Submit My Application")
+      expect(page).to have_field(:description)
+      fill_in :description, with: "I'm a good host!"
+      click_button "Submit Application"
+    end
+
+    expect(current_path).to eq("/applications/#{application_2.id}")
+    expect(page).to have_content("Pending")
+    expect(page).to have_content(pet_4.name)
+    expect(page).to have_content("I'm a good host!")
+    expect(page).to_not have_content("Add a Pet to this Application")
+    expect(page).to_not have_field(:search)
+
   end
 end
