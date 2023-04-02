@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2023_03_31_004815) do
     t.integer "age"
     t.string "breed"
     t.string "name"
+    t.string "pet_status", default: "Pending Approval", null: false
     t.bigint "shelter_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
