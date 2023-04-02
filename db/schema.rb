@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2023_03_31_004815) do
   create_table "pet_applications", force: :cascade do |t|
     t.bigint "pet_id"
     t.bigint "application_id"
+    t.string "pet_status", default: "Pending Approval", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_pet_applications_on_application_id"
@@ -41,7 +42,6 @@ ActiveRecord::Schema.define(version: 2023_03_31_004815) do
     t.integer "age"
     t.string "breed"
     t.string "name"
-    t.string "pet_status", default: "Pending Approval", null: false
     t.bigint "shelter_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
