@@ -32,7 +32,11 @@ class PetsController < ApplicationController
 
   def update
     pet = Pet.find(params[:id])
-    if pet.update(pet_params)
+    if params[:pet_status] == "Approved"
+      pet.update(pet_params)
+      id = pet.applications.first.id
+      redirect_to "/admin/applications/#{id}"
+    elsif pet.update(pet_params)
       redirect_to "/pets/#{pet.id}"
     else
       redirect_to "/pets/#{pet.id}/edit"
@@ -48,6 +52,6 @@ class PetsController < ApplicationController
   private
 
   def pet_params
-    params.permit(:id, :name, :age, :breed, :adoptable, :shelter_id)
+    params.permit(:id, :name, :age, :breed, :adoptable, :shelter_id, :pet_status)
   end
 end

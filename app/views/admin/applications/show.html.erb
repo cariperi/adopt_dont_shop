@@ -1,0 +1,17 @@
+<h1>Application for <%= @application.name %></h1>
+<% @pets.each do |pet| %>
+  <% if pet.pet_status == "Pending Approval" %> 
+    <div id="pet-<%= pet.id %>">
+      <%= link_to pet.name, "/pets/#{pet.id}" %>
+      <p><%= form_with url: "/pets/#{pet.id}", local: true, method: :patch do |form| %>
+        <%= form.hidden_field :pet_status, value: "Approved" %>
+        <%= form.submit "Approve" %>
+      <% end %></p>
+    </div>
+  <% elsif pet.pet_status == "Approved" %>
+    <div id="pet-<%= pet.id %>">
+      <%= link_to pet.name, "/pets/#{pet.id}" %>
+      <h3>Status: <%= pet.pet_status %></h3>
+    </div>
+  <% end %>
+<% end %>
