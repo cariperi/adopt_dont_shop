@@ -1,0 +1,7 @@
+<h1>Shelters - Administrative View</h1>
+<% @shelters.each do |shelter| %>
+  <h3>Name:</h3> <%= shelter.name %>
+  <h3>City:</h3> <%= shelter.city %>
+  <h3>Foster Program:</h3> <%= shelter.foster_program %>
+  <h3>Rank:</h3> <%= shelter.rank %>
+<% end %>
