@@ -8,13 +8,30 @@ RSpec.describe 'the admin/shelters index' do
   let!(:pet_2) { shelter_1.pets.create!(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true) }
   let!(:pet_3) { shelter_2.pets.create!(name: 'Lucille Bald', breed: 'sphynx', age: 8, adoptable: true) }
 
+  let!(:application_1) { Application.create!(name: 'Chris Simmons', street_address: '123 Main St.', city: 'Columbus', state: 'OH', zipcode: '43210', description: "I'm a good host!", status: 'Pending' )}
+
   it 'should display all shelters in descending order by name' do
     visit '/admin/shelters'
-save_and_open_page
-    expect(page).to have_content(shelter_1.name)    
-    expect(page).to have_content(shelter_2.name)    
-    expect(page).to have_content(shelter_3.name)    
+
+    expect(page).to have_content(shelter_1.name)
+    expect(page).to have_content(shelter_2.name)
+    expect(page).to have_content(shelter_3.name)
     expect(shelter_2.name).to appear_before(shelter_3.name)
     expect(shelter_3.name).to appear_before(shelter_1.name)
+  end
+
+  it 'should show a section for Shelters with Pending Applications' do
+    application_1.pets << pet_1 #associated with shelter 1
+    application_1.pets << pet_3 #associated with shelter 2
+
+    visit '/admin/shelters'
+
+    expect(page).to have_content("Shelters with Pending Applications")
+
+    within("#with_pending_apps") do
+      expect(page).to have_content(shelter_1.name)
+      expect(page).to have_content(shelter_2.name)
+      expect(page).to_not have_content(shelter_3.name)
+    end
   end
 end
