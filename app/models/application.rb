@@ -7,4 +7,8 @@ class Application < ApplicationRecord
   validates :city, presence: true
   validates :state, presence: true
   validates :zipcode, presence: true
+
+  def find_pet_app(pet_id)
+    pet_applications.where(pet_id: pet_id).first
+  end
 end
