@@ -7,7 +7,8 @@ class PetApplicationsController < ApplicationController
 
   def update
     pet_application = PetApplication.find(params[:id])
-    pet_application.update(pet_status: params[:pet_status])
+    #pet_application.update(pet_status: params[:pet_status])
+    pet_application.update(pet_application_params)
     application = pet_application.application
     redirect_to "/admin/applications/#{application.id}"
   end

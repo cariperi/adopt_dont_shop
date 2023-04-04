@@ -5,12 +5,12 @@
     <div id="pet-<%= pet.id %>">
       <%= link_to pet.name, "/pets/#{pet.id}" %>
 
-      <p><%= form_with url: "/pet_applications/#{pet_application.id}", local: true, method: :patch do |form| %>
+      <p><%= form_with model: pet_application, url: "/pet_applications/#{pet_application.id}", local: true, method: :patch do |form| %>
         <%= form.hidden_field :pet_status, value: "Approved" %>
         <%= form.submit "Approve" %>
       <% end %></p>
 
-      <p><%= form_with url: "/pet_applications/#{pet_application.id}", local: true, method: :patch do |form| %>
+      <p><%= form_with model: pet_application, url: "/pet_applications/#{pet_application.id}", local: true, method: :patch do |form| %>
         <%= form.hidden_field :pet_status, value: "Rejected" %>
         <%= form.submit "Reject" %>
       <% end %></p>
