@@ -20,6 +20,8 @@
 
   <% if params[:search] && @found_pets.empty? %>
     <p>No pets match this search.</p>
+  <% elsif params[:search] == "" %>
+    <p>No pets match this search.</p>
   <% elsif params[:search] %>
     <h3>Results</h3>
     <% @found_pets.each do |found_pet| %>

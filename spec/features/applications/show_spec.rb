@@ -75,6 +75,16 @@ RSpec.describe 'the application show', type: :features do
     expect(page).to_not have_content("Results")
     expect(page).to have_content("No pets match this search.")
   end
+ 
+  it "shows a message if field is left blank" do
+    visit "/applications/#{application_2.id}"
+
+    click_button "Submit"
+
+    expect(current_path).to eq("/applications/#{application_2.id}")
+    expect(page).to_not have_content("Results")
+    expect(page).to have_content("No pets match this search.")
+  end
 
   it "does not display the search for applications that have already been submitted" do
     visit "/applications/#{application_1.id}" #pending application (already submitted)

@@ -13,8 +13,12 @@ class ApplicationsController < ApplicationController
 
   def create
     application = Application.new(application_params)
+    # require 'pry'; binding.pry
     if application.save
       redirect_to "/applications/#{application.id}"
+    elsif application.invalid? && application.invalid_zipcode?
+      redirect_to '/applications/new'
+      flash[:alert] = "ERROR: Zipcode must be five digits long"
     else
       redirect_to '/applications/new'
       flash[:alert] = "ERROR: Please don't leave spaces blank"
