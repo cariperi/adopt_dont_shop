@@ -1,4 +1,7 @@
-<h1>Application for <%= @application.name %></h1>
+<%= render "shared/app_details" %>
+
+<h3>Pets In This Application:</h3>
+
 <% @pets.each do |pet| %>
   <% pet_application = @application.find_pet_app(pet.id) %>
   <% if pet_application.pet_status == "Pending Approval" %>
