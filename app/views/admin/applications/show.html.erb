@@ -1,16 +1,19 @@
-<h1>Application for <%= @application.name %></h1>
+<%= render "shared/app_details" %>
+
+<h3>Pets In This Application:</h3>
+
 <% @pets.each do |pet| %>
   <% pet_application = @application.find_pet_app(pet.id) %>
   <% if pet_application.pet_status == "Pending Approval" %>
     <div id="pet-<%= pet.id %>">
       <%= link_to pet.name, "/pets/#{pet.id}" %>
 
-      <p><%= form_with url: "/pet_applications/#{pet_application.id}", local: true, method: :patch do |form| %>
+      <p><%= form_with model: pet_application, url: "/pet_applications/#{pet_application.id}", local: true, method: :patch do |form| %>
         <%= form.hidden_field :pet_status, value: "Approved" %>
         <%= form.submit "Approve" %>
       <% end %></p>
 
-      <p><%= form_with url: "/pet_applications/#{pet_application.id}", local: true, method: :patch do |form| %>
+      <p><%= form_with model: pet_application, url: "/pet_applications/#{pet_application.id}", local: true, method: :patch do |form| %>
         <%= form.hidden_field :pet_status, value: "Rejected" %>
         <%= form.submit "Reject" %>
       <% end %></p>

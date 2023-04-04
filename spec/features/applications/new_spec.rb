@@ -36,7 +36,6 @@ RSpec.describe 'the Application creation' do
     fill_in('State', with: "")
     fill_in('Zipcode', with: "")
     click_button('Create Application')
-# save_and_open_page
 
     expect(current_path).to eq("/applications/new")
     expect(page).to_not have_content("Chris Simmons")
