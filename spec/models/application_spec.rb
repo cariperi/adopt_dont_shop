@@ -6,11 +6,11 @@ RSpec.describe Application, type: :model do
   end
 
   describe 'validations' do
-    it {validate_presence_of :name}
-    it {validate_presence_of :street_address}
-    it {validate_presence_of :city}
-    it {validate_presence_of :state}
-    it {validate_presence_of :zipcode}
+    it {should validate_presence_of :name}
+    it {should validate_presence_of :street_address}
+    it {should validate_presence_of :city}
+    it {should validate_presence_of :state}
+    it {should validate_presence_of :zipcode}
   end
 
   describe 'instance methods' do
