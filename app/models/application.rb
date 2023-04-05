@@ -16,11 +16,11 @@ class Application < ApplicationRecord
     zipcode.size != 5
   end
 
-  def pets_pending_approvals? #returns false if none of the statuses are "Pending Approval"
+  def pets_pending_approvals? 
     pet_applications.where(pet_status: 'Pending Approval').any?
   end
 
-  def pets_rejected? #returns true if any of the statuses are "Rejected"
+  def pets_rejected? 
     pet_applications.where(pet_status: 'Rejected').any?
   end
 end
