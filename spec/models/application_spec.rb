@@ -24,9 +24,10 @@ RSpec.describe Application, type: :model do
     let!(:pet_1) { shelter_1.pets.create!(name: 'Jasper', age: 7, breed: 'Maine Coon', adoptable: true )}
     let!(:pet_2) { shelter_1.pets.create!(name: 'Spot', age: 3, breed: 'Singapura', adoptable: true )}
 
-    let!(:pet_application_1) { PetApplication.create!(pet_id: pet_1.id, application_id: application_1.id)}
-    let!(:pet_application_2) { PetApplication.create!(pet_id: pet_1.id, application_id: application_2.id)}
-    let!(:pet_application_3) { PetApplication.create!(pet_id: pet_2.id, application_id: application_1.id)}
+    let!(:pet_application_1) { PetApplication.create!(pet_id: pet_1.id, application_id: application_1.id, pet_status: "Rejected")}
+    let!(:pet_application_2) { PetApplication.create!(pet_id: pet_1.id, application_id: application_2.id, pet_status: "Approved")}
+    let!(:pet_application_3) { PetApplication.create!(pet_id: pet_2.id, application_id: application_1.id, pet_status: "Pending Approval")}
+    let!(:pet_application_4) { PetApplication.create!(pet_id: pet_2.id, application_id: application_2.id, pet_status: "Approved")}
 
     describe '#find_pet_app(pet_id)' do
       it 'returns the pet application for the specific app and pet ids' do
@@ -35,12 +36,25 @@ RSpec.describe Application, type: :model do
         expect(application_1.find_pet_app(pet_2.id)).to eq(pet_application_3)
       end
     end
-    
+
     describe '#invalid_zipcode?' do
       it 'returns true if the zipcode length is not equal to 5 characters' do
         expect(application_3.invalid_zipcode?).to eq(true)
         expect(application_4.invalid_zipcode?).to eq(true)
         expect(application_1.invalid_zipcode?).to eq(false)
+      end
+    end
+
+    describe 'methods to check pet statuses' do
+
+      it "returns true if any of the statues are Pending Approval" do
+        expect(application_1.pets_pending_approvals?).to be true
+        expect(application_2.pets_pending_approvals?).to be false
+      end
+
+      it "returns true if any of the statuses are Rejected" do
+        expect(application_1.pets_rejected?).to be true
+        expect(application_2.pets_rejected?).to be false
       end
     end
   end
