@@ -48,6 +48,13 @@ RSpec.describe Shelter, type: :model do
       end
     end
 
+    describe '#get_details' do
+      it 'returns name and address for a specific shelter' do
+        expect(Shelter.get_details(@shelter_1.id)).to eq(["Aurora shelter", "Aurora, CO"])
+        expect(Shelter.get_details(@shelter_2.id)).to eq(['RGV animal shelter', 'Harlingen, TX'])
+      end
+    end
+
     describe '#pending_apps' do
       let!(:application_1) { Application.create!(name: 'Chris Simmons', street_address: '123 Main St.', city: 'Columbus', state: 'OH', zipcode: '43210', description: "I'm a good host!", status: 'Pending' )}
       it 'returns only shelters with pending pet applications' do
