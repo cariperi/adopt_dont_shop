@@ -10,6 +10,13 @@ class PetApplicationsController < ApplicationController
     #pet_application.update(pet_status: params[:pet_status])
     pet_application.update(pet_application_params)
     application = pet_application.application
+
+    if !application.pets_rejected? && !application.pets_pending_approvals?
+      application.update(status: "Approved")
+    elsif application.pets_rejected? && !application.pets_pending_approvals?
+      application.update(status: "Rejected")
+    end
+
     redirect_to "/admin/applications/#{application.id}"
   end
 
