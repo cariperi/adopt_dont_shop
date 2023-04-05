@@ -2,3 +2,12 @@
 
 <p>Name: <%= @shelter_details[0] %></p>
 <p>Address: <%= @shelter_details[1] %></p>
+
+<h2>Pet Statistics</h2>
+
+<% if @shelter.adoptable_pet_count == 0 %>
+  <p>No adoptable pets are available at this time.</p>
+<% else %>
+  <p>Number of Adoptable Pets: <%= @shelter.adoptable_pet_count%>
+  <p>Average Age of Adoptable Pets: <%= @shelter.pets_avg_age%> years</p>
+<% end %>

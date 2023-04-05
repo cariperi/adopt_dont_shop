@@ -27,4 +27,39 @@ RSpec.describe 'admin/shelters show page' do
     expect(page).to have_content(shelter_2.name)
     expect(page).to have_content(shelter_2.city)
   end
+
+  it 'should have a section for statistics with the average age of all adoptable pets for that shelter' do
+    visit "/admin/shelters/#{shelter_1.id}"
+
+    expect(page).to have_content("Pet Statistics")
+    expect(page).to have_content("Average Age of Adoptable Pets: 4 years")
+
+    visit "/admin/shelters/#{shelter_2.id}"
+
+    expect(page).to have_content("Pet Statistics")
+    expect(page).to have_content("Average Age of Adoptable Pets: 8 years")
+
+    visit "/admin/shelters/#{shelter_3.id}"
+
+    expect(page).to have_content("Pet Statistics")
+    expect(page).to have_content("No adoptable pets are available at this time.")
+  end
+
+  it 'should have a section for statistics with the number of pets at the given shelter that are adoptable' do
+    visit "/admin/shelters/#{shelter_1.id}"
+
+    expect(page).to have_content("Pet Statistics")
+    expect(page).to have_content("Number of Adoptable Pets: 2")
+
+    visit "/admin/shelters/#{shelter_2.id}"
+
+    expect(page).to have_content("Pet Statistics")
+    expect(page).to have_content("Number of Adoptable Pets: 1")
+
+    visit "/admin/shelters/#{shelter_3.id}"
+
+    expect(page).to have_content("Pet Statistics")
+    expect(page).to have_content("No adoptable pets are available at this time.")
+    expect(page).to_not have_content("Number of Adoptable Pets")
+  end
 end
