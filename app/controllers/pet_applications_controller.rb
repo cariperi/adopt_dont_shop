@@ -7,12 +7,13 @@ class PetApplicationsController < ApplicationController
 
   def update
     pet_application = PetApplication.find(params[:id])
-    #pet_application.update(pet_status: params[:pet_status])
     pet_application.update(pet_application_params)
     application = pet_application.application
+    pets = application.pets
 
     if !application.pets_rejected? && !application.pets_pending_approvals?
       application.update(status: "Approved")
+      pets.update(adoptable: false)
     elsif application.pets_rejected? && !application.pets_pending_approvals?
       application.update(status: "Rejected")
     end
