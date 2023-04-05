@@ -10,7 +10,7 @@ RSpec.describe 'the admin/application show', type: :features do
 
   let!(:pet_1) { shelter_1.pets.create!(name: 'Jasper', age: 7, breed: 'Maine Coon', adoptable: true )}
   let!(:pet_2) { shelter_1.pets.create!(name: 'Spot', age: 3, breed: 'Singapura', adoptable: true )}
-  let!(:pet_3) { shelter_1.pets.create!(name: 'Willow', age: 4, breed: 'Cornish Rex', adoptable: false )}
+  let!(:pet_3) { shelter_1.pets.create!(name: 'Willow', age: 4, breed: 'Cornish Rex', adoptable: true )}
 
   it 'should display button to approve a pet on a pending application' do
     application_1.pets << pet_1
@@ -113,6 +113,27 @@ RSpec.describe 'the admin/application show', type: :features do
     within("#app-status") do
       expect(page).to have_content("Rejected")
     end
+  end
+  
+  it 'updates pet adoptability post pet approval' do
+    application_1.pets << pet_1
+    application_1.pets << pet_2
+    application_1.pets << pet_3
+
+    visit "/admin/applications/#{application_1.id}"
+
+    find("#pet-#{pet_1.id}").click_button "Approve"
+    find("#pet-#{pet_2.id}").click_button "Approve"
+    find("#pet-#{pet_3.id}").click_button "Approve"
+
+    visit "/pets/#{pet_1.id}"
+    expect(page).to have_content('false')
+    
+    visit "/pets/#{pet_2.id}"
+    expect(page).to have_content('false')
+    
+    visit "/pets/#{pet_3.id}"
+    expect(page).to have_content('false')
   end
 end
 
