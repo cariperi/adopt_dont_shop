@@ -82,6 +82,38 @@ RSpec.describe 'the admin/application show', type: :features do
       expect(page).to_not have_content("Rejected")
     end
   end
+
+  it 'approves an application when all pets on that app are approved' do
+    application_1.pets << pet_1
+    application_1.pets << pet_2
+
+    visit "/admin/applications/#{application_1.id}"
+
+    find("#pet-#{pet_1.id}").click_button "Approve"
+    find("#pet-#{pet_2.id}").click_button "Approve"
+
+    expect(current_path).to eq("/admin/applications/#{application_1.id}")
+    within("#app-status") do
+      expect(page).to have_content("Approved")
+    end
+  end
+
+  it 'rejects an application if one or more pets are rejected, and all other pets are approved' do
+    application_1.pets << pet_1
+    application_1.pets << pet_2
+    application_1.pets << pet_3
+
+    visit "/admin/applications/#{application_1.id}"
+
+    find("#pet-#{pet_1.id}").click_button "Approve"
+    find("#pet-#{pet_2.id}").click_button "Reject"
+    find("#pet-#{pet_3.id}").click_button "Reject"
+
+    expect(current_path).to eq("/admin/applications/#{application_1.id}")
+    within("#app-status") do
+      expect(page).to have_content("Rejected")
+    end
+  end
 end
 
 #save_and_open_page

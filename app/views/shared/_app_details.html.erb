@@ -3,4 +3,4 @@
 <h3>Name:</h3> <%= @application.name %>
 <h3>Address:</h3> <p><%= @application.street_address %> <%= @application.city %>, <%= @application.state %> <%= @application.zipcode %></p>
 <h3>Why should pets go to your house?</h3> <%= @application.description %>
-<h3>Status:</h3> <%= @application.status %>
+<h3>Application Status:</h3> <div id='app-status'><%= @application.status %></div>
