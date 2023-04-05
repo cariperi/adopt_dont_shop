@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  #root 'welcome#index'
   get '/', to: 'application#welcome'
 
   get '/shelters', to: 'shelters#index'
@@ -43,7 +42,6 @@ Rails.application.routes.draw do
   post '/applications', to: 'applications#create'
   patch '/applications/:id', to: 'applications#update'
   get '/applications/:id', to: 'applications#edit'
-  # get 'applications', to: 'applications#index'
 
   post '/pet_applications', to: 'pet_applications#create'
   patch '/pet_applications/:id', to: 'pet_applications#update'

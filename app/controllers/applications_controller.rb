@@ -13,7 +13,6 @@ class ApplicationsController < ApplicationController
 
   def create
     application = Application.new(application_params)
-    # require 'pry'; binding.pry
     if application.save
       redirect_to "/applications/#{application.id}"
     elsif application.invalid? && application.invalid_zipcode?
